@@ -40,15 +40,17 @@ function cocktail(array, target, width, draw, curr) {
         var ret = progress.slice(i, i + width);
         var shuf = shuffle(ret);
         for(let j = 0; j < width; j++) {
-            progress[i+j]=shuf[j];
+            progress[i+j] = shuf[j];
         }
     }
 
 
     var ret = setInterval(function () {
         var flag = true;
+        var sum = 0;
         for (let j = 0; j < arrlen / width; j++) {
             flag &= done[j];
+            sum+=done[j];
         }
         if (flag || curr !== currIter) {
             clearInterval(ret);
@@ -162,6 +164,7 @@ function bubblesort(array, target, width, draw, curr) {
 }
 
 
+var fun = bubblesort;
 
 function processImg() {
     var c = document.getElementById('canv');
@@ -193,7 +196,7 @@ function processImg() {
     var p2 = ctx2.createImageData(p);
     var pixels = p.data;
     var pixels2 = p2.data;
-    cocktail(pixels, pixels2, p2.width, function () {
+    fun(pixels, pixels2, p2.width, function () {
         ctx2.putImageData(p2, 0, 0);
     }, currIter);
 }
@@ -217,4 +220,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currIter++;
     });
-});
+    if(document.getElementById('sel').value=='Bubblesort') {
+        fun = bubblesort;
+    }
+    else {
+        fun = cocktail;
+    }
+    document.getElementById('sel').addEventListener('change', function (event) {
+        if(document.getElementById('sel').value=='Bubblesort') {
+            fun = bubblesort;
+        }
+        else {
+            fun = cocktail;
+        }
+        currIter++;
+        processImg();
+    });
+}
+
+
+
+
+);
