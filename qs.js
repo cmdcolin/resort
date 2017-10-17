@@ -2,15 +2,11 @@
 
 var timestep = 4;
 var currIter = 0;
+var img = new Image();
 
-function swap(arr, i, j) {
-    var temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
 
 function shuffle(array, start, end) {
-    for (var i = end; i > start; i--) {
+    for (let i = end; i > start; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
@@ -22,10 +18,10 @@ function bubblesort(array, target, width, draw, curr) {
     var done = [];
     var progress = [];
     var arrlen = array.length / 4;
-    for (var i = 0; i < arrlen; i++) {
+    for (let i = 0; i < arrlen; i++) {
         progress[i] = i % width;
     }
-    for (var i = 0; i < arrlen; i += width) {
+    for (let i = 0; i < arrlen; i += width) {
         done.push(false);
         shuffle(progress, i, i + width);
     }
@@ -33,18 +29,17 @@ function bubblesort(array, target, width, draw, curr) {
 
     var ret = setInterval(function () {
         var flag = true;
-        for (var j = 0; j < arrlen / width; j++) {
+        for (let j = 0; j < arrlen / width; j++) {
             flag &= done[j];
         }
-        if (flag || curr != currIter) {
-            console.log('done');
+        if (flag || curr !== currIter) {
             clearInterval(ret);
             return;
         }
-        for (var j = 0; j < arrlen; j += width) {
+        for (let j = 0; j < arrlen; j += width) {
             if (!done[j]) {
                 done[j] = true;
-                for (var i = 1; i < width; i++) {
+                for (let i = 1; i < width; i++) {
                     if (progress[j + i - 1] > progress[j + i]) {
                         done[j] = false;
                         [progress[j + i - 1], progress[j + i]] = [progress[j + i], progress[j + i - 1]];
@@ -52,8 +47,8 @@ function bubblesort(array, target, width, draw, curr) {
                 }
             }
         }
-        for (var j = 0; j < arrlen; j += width) {
-            for (var i = 0; i < width; i++) {
+        for (let j = 0; j < arrlen; j += width) {
+            for (let i = 0; i < width; i++) {
                 var iter = (j + progress[j + i]) * 4;
                 var iter2 = (j + i) * 4;
                 target[iter2 + 0] = array[iter + 0];
@@ -72,29 +67,28 @@ function cocktail(array, target, width, draw, curr) {
     var done = [];
     var progress = [];
     var arrlen = array.length / 4;
-    for (var i = 0; i < arrlen; i++) {
+    for (let i = 0; i < arrlen; i++) {
         progress[i] = i % width;
     }
-    for (var i = 0; i < arrlen; i += width) {
+    for (let i = 0; i < arrlen; i += width) {
         done.push(false);
         shuffle(progress, i, i + width);
     }
 
 
-    var ret = setInterval(function sort() {
+    var ret = setInterval(function () {
         var flag = true;
-        for (var j = 0; j < arrlen / width; j++) {
+        for (let j = 0; j < arrlen / width; j++) {
             flag &= done[j];
         }
-        if (flag || curr != currIter) {
-            console.log('done');
+        if (flag || curr !== currIter) {
             clearInterval(ret);
             return;
         }
-        for (var j = 0; j < arrlen; j += width) {
+        for (let j = 0; j < arrlen; j += width) {
             if (!done[j]) {
                 done[j] = true;
-                for (var i = 1; i < width; i++) {
+                for (let i = 1; i < width; i++) {
                     if (progress[j + i - 1] > progress[j + i]) {
                         done[j] = false;
                         progress[j + i - 1] = progress[j + i - 1] ^ progress[j + i];
@@ -105,7 +99,7 @@ function cocktail(array, target, width, draw, curr) {
                 }
                 if (done[j]) break;
                 done[j] = true;
-                for (var i = width - 1; i > 0; i--) {
+                for (let i = width - 1; i > 0; i--) {
                     if (progress[j + i - 1] > progress[j + i]) {
                         done[j] = false;
                         progress[j + i - 1] = progress[j + i - 1] ^ progress[j + i];
@@ -116,8 +110,8 @@ function cocktail(array, target, width, draw, curr) {
                 }
             }
         }
-        for (var j = 0; j < arrlen; j += width) {
-            for (var i = 0; i < width; i++) {
+        for (let j = 0; j < arrlen; j += width) {
+            for (let i = 0; i < width; i++) {
                 var iter = (j + progress[j + i]) * 4;
                 var iter2 = (j + i) * 4;
                 target[iter2 + 0] = array[iter + 0];
@@ -132,22 +126,10 @@ function cocktail(array, target, width, draw, curr) {
 }
 
 
-var img = new Image();
-img.onload = function () {
-    document.getElementById('myinput').addEventListener('change', function (evt) {
-        var tgt = evt.target || window.event.srcElement,
-            files = tgt.files;
 
-        // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                img.src = fr.result;
-            };
-            fr.readAsDataURL(files[0]);
-        }
-        currIter++;
-    });
+function processImg() {
+    alert(img.width+' '+ img.height+' '+ img.height/img.width);
+    
     var c = document.getElementById('canv');
     var c2 = document.getElementById('canv2');
     var ctx = c.getContext('2d');
@@ -155,9 +137,9 @@ img.onload = function () {
     var dp = window.devicePixelRatio;
     var w = img.width;
     var h = img.height;
-    var ww = 300;
-    img.width = ww;
-    img.height = ww * h / w;
+    img.width = 300;
+    img.height = 300 * h/w;
+    console.log(img.width,img.height);
 
     c.width = img.width * dp;
     c.height = img.height * dp;
@@ -178,10 +160,28 @@ img.onload = function () {
     var p2 = ctx2.createImageData(p);
     var pixels = p.data;
     var pixels2 = p2.data;
-    var w = p.width;
-    cocktail(pixels, pixels2, w, function () {
+    cocktail(pixels, pixels2, p.width, function () {
         ctx2.putImageData(p2, 0, 0);
     }, currIter);
 };
+
+
+img.onload = processImg
 img.src = 'baby3.jpg';
 
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('myinput').addEventListener('change', function (event) {
+        var selectedFile = event.target.files[0];
+        var reader = new FileReader();
+        img = new Image();
+        img.onload = processImg;
+
+        reader.onload = function(event) {
+            img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(selectedFile);
+
+        currIter++;
+    });
+});
