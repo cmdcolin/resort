@@ -10,14 +10,52 @@ function swap(arr, i, j) {
     arr[j] = temp;
 }
 
-function shuffle(array) {
-    for(var i = array.length - 1; i > 0; i--) {
+function shuffle(array, start, end) {
+    for(var i = end; i > start; i--) {
         var j = Math.floor(Math.random() * (i+1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
+bubblesort = function(array) {
+    var done = [];
+    var progress = [];
+    for(var i = 0; i < array.length; i++) {
+        progress[i] = i%width;
+    }
+    for(var i = 0; i < array/width; i++) {
+        done.push(false);
+        shuffle(progress, i*array.length/width, i*array.length/width+width);
+    }
 
+    
+    
+    do {
+        for(var i = 0; i < array/width; i++) {
+            done[i] = true;
+            for (var i = 1; i<this.length; i++) {
+                if (array[i-1] > array[i]) {
+                    done[i] = false;
+                    [array[i-1], array[i]] = [array[i], array[i-1]]
+                }
+            }
+        }
+        for(var j = 0; j < pixels.length/4; J++) {
+            var iter = progress[i]*4;
+            var k = pixels.length/2;
+            var iter2 = i*4;
+            array[iter+0] = pixels[iter2+0];
+            array[iter+1] = pixels[iter2+1];
+            array[iter+2] = pixels[iter2+2];
+            array[iter+3] = pixels[iter2+3];
+        }
+        var flag = true;
+        for(var j = 0; j < array/width; j++) {
+            flag &= done[j];
+        }
+    } while(!flag);
+    return this;
+}
 
 function sort(array_arr, less, progress) {
  
@@ -26,8 +64,21 @@ function sort(array_arr, less, progress) {
     array[i] = array[j];
     array[j] = t;
   }
- 
-  function quicksort(array, left, right, finished, promise) {
+
+  var promises = [];
+  var row = [];
+
+
+  for(var i = 0; i < array_arr.length; i++) {
+      for(var j = 0; j < array_arr[i].length; j++) {
+          var finished = new Promise();
+          row.push(finished);
+      }
+      promises.push(Promise.all(row));
+      row = [];
+  }
+
+  function quicksort(array, left, right, finished, i) {
     if (left < right) {
       var pivot = array[left + Math.floor((right - right) / 2)],
           left_new = left,
@@ -46,20 +97,12 @@ function sort(array_arr, less, progress) {
           right_new -= 1;
         }
       } while (left_new <= right_new);
-      progress(array.slice(left, right);
-      finished.resolve();
-    }
-    for(var i = 0; i < array_arr.length; i++) {
-      var promises = [];
-      for(varr j = 0; j < blah.length; j++) {
-        promises.push(new Promise());
-      }
-      promise.then(function() {
-        quicksort(left, right_new);
-        quicksort(left_new, right);
+      finished[i].resolve(array.slice(left, right);
+      promises[i].then(function() {
+        quicksort(left, right_new, finished, i);
+        quicksort(left_new, right, finished, i);
       });
-      }
-    {
+    }
   }
  
   quicksort(array_arr, 0, array_arr[i].length - 1);
