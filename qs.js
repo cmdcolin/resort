@@ -174,8 +174,9 @@ function processImg() {
     var dp = window.devicePixelRatio;
     var w = img.width;
     var h = img.height;
-    img.width = 300;
-    img.height = 300 * h / w;
+    var nn = document.getElementById('mynum').value;
+    img.width = nn;
+    img.height = nn * h / w;
 
     c.width = img.width * dp;
     c.height = img.height * dp;
@@ -233,6 +234,10 @@ document.addEventListener('DOMContentLoaded', function () {
         else {
             fun = cocktail;
         }
+        currIter++;
+        processImg();
+    });
+    document.getElementById('mynum').addEventListener('change', function (event) {
         currIter++;
         processImg();
     });

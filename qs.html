@@ -1,17 +1,24 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>VASTHOLDINGS.US</title>
+        <title>RESORT</title>
     </head>
     <body>
+        <h1>RESORT</h1>
+        <p>Select an image and options for sorting. Inspired by <a href=https://imgur.com/gallery/RM3wl>https://imgur.com/gallery/RM3wl</a></p>
         <canvas id="canv"></canvas>
         <script src="qs.js"></script>
         <canvas id="canv2"></canvas>
+
+        <h3>Options</h3>
         <input id="myinput" type="file"></input>
+        <label for="sel">Sorting algorithm</label>
         <select id="sel">
             <option>Bubblesort</option>
             <option>Cocktail</option>
         </select>
+        <label for="mynum">Picture size (width)</label>
+        <input type="number" id="mynum" value="300"></input>
 
     </body>
 </html>
