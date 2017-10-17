@@ -28,6 +28,7 @@ function bubblesort(array, target, width, draw, curr) {
     var done = [];
     var progress = [];
     var arrlen = array.length / 4;
+    var sofar = 0;
     for (let i = 0; i < arrlen; i++) {
         progress[i] = i % width;
     }
@@ -35,20 +36,17 @@ function bubblesort(array, target, width, draw, curr) {
         done.push(false);
         var ret = progress.slice(i, i + width);
         var shuf = shuffle(ret);
-        for(let j = 0; j < width; j++) {
+        for(let j = 0; j < width-sofar; j++) {
             progress[i+j]=shuf[j];
         }
     }
+    sofar++;
 
 
     var ret = setInterval(function () {
         var flag = true;
-        var sum = 0;
-        var which = [];
         for (let j = 0; j < arrlen / width; j++) {
             flag &= done[j];
-            sum += done[j];
-            if(done[j]) which.push(j);
         }
         if (flag || curr !== currIter) {
             clearInterval(ret);
@@ -93,16 +91,18 @@ function cocktail(array, target, width, draw, curr) {
     }
     for (let i = 0; i < arrlen; i += width) {
         done.push(false);
-        shuffle(progress, i, i + width);
+        var ret = progress.slice(i, i + width);
+        var shuf = shuffle(ret);
+        for(let j = 0; j < width; j++) {
+            progress[i+j]=shuf[j];
+        }
     }
 
 
     var ret = setInterval(function () {
         var flag = true;
-        var sum = 0;
         for (let j = 0; j < arrlen / width; j++) {
             flag &= done[j];
-            sum+=done[j];
         }
         if (flag || curr !== currIter) {
             clearInterval(ret);
