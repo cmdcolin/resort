@@ -8,7 +8,10 @@ var img = new Image();
 function shuffle(array, start, end) {
     for (let i = end; i > start; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        array[i] = array[i] ^ array[j];
+        array[j] = array[j] ^ array[i];
+        array[i] = array[i] ^ array[j];
+        //[array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
@@ -42,7 +45,10 @@ function bubblesort(array, target, width, draw, curr) {
                 for (let i = 1; i < width; i++) {
                     if (progress[j + i - 1] > progress[j + i]) {
                         done[j] = false;
-                        [progress[j + i - 1], progress[j + i]] = [progress[j + i], progress[j + i - 1]];
+                        progress[j + i - 1] = progress[j + i - 1] ^ progress[j + i];
+                        progress[j + i] = progress[j + i] ^ progress[j + i - 1];
+                        progress[j + i - 1] = progress[j + i - 1] ^ progress[j + i];
+                        //[progress[j + i - 1], progress[j + i]] = [progress[j + i], progress[j + i - 1]];
                     }
                 }
             }
@@ -126,10 +132,7 @@ function cocktail(array, target, width, draw, curr) {
 }
 
 
-
 function processImg() {
-    alert(img.width+' '+ img.height+' '+ img.height/img.width);
-    
     var c = document.getElementById('canv');
     var c2 = document.getElementById('canv2');
     var ctx = c.getContext('2d');
@@ -138,8 +141,8 @@ function processImg() {
     var w = img.width;
     var h = img.height;
     img.width = 300;
-    img.height = 300 * h/w;
-    console.log(img.width,img.height);
+    img.height = 300 * h / w;
+    console.log(img.width, img.height);
 
     c.width = img.width * dp;
     c.height = img.height * dp;
@@ -163,10 +166,10 @@ function processImg() {
     cocktail(pixels, pixels2, p.width, function () {
         ctx2.putImageData(p2, 0, 0);
     }, currIter);
-};
+}
 
 
-img.onload = processImg
+img.onload = processImg;
 img.src = 'baby3.jpg';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -176,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         img = new Image();
         img.onload = processImg;
 
-        reader.onload = function(event) {
+        reader.onload = function (event) {
             img.src = event.target.result;
         };
 
