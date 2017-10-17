@@ -2,7 +2,7 @@
 
 var w;
 var h;
-var timestep = 40;
+var timestep = 4;
 
 function swap(arr, i, j) {
     var temp = arr[i];
@@ -16,6 +16,27 @@ function shuffle(array, start, end) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+function memcpy (src, srcOffset, dst, dstOffset, length) {
+    var i
+
+    src = src.subarray || src.slice ? src : src.buffer
+    dst = dst.subarray || dst.slice ? dst : dst.buffer
+
+    src = srcOffset ? src.subarray ?
+        src.subarray(srcOffset, length && srcOffset + length) :
+        src.slice(srcOffset, length && srcOffset + length) : src
+
+    if (dst.set) {
+        dst.set(src, dstOffset)
+    } else {
+        for (i=0; i<src.length; i++) {
+            dst[i + dstOffset] = src[i]
+        }
+    }
+
+    return dst
 }
 function bubblesort(array, target, width, draw) {
     var done = [];
@@ -40,26 +61,24 @@ function bubblesort(array, target, width, draw) {
             return;
         }
         for (var j = 0; j < arrlen; j += width) {
-            for (var i = 0; i < width; i++) {
-                if (!done[j]) {
-                    done[j] = true;
-                    for (var i = 1; i < width; i++) {
-                        if (array[j + i - 1] > array[j + i]) {
-                            done[j] = false;
-                            [array[j + i - 1], array[j + i]] = [array[j + i], array[j + i - 1]];
-                        }
+            if (!done[j]) {
+                done[j] = true;
+                for (var i = 1; i < width; i++) {
+                    if (progress[j + i - 1] > progress[j + i]) {
+                        done[j] = false;
+                        [progress[j + i - 1], progress[j + i]] = [progress[j + i], progress[j + i - 1]];
                     }
                 }
             }
         }
         for (var j = 0; j < arrlen; j += width) {
             for (var i = 0; i < width; i++) {
-                var iter = progress[j + i] * 4;
-                var iter2 = i * 4;
-                target[j + iter2 + 0] = array[j + iter2 + 0];
-                target[j + iter2 + 1] = array[j + iter2 + 1];
-                target[j + iter2 + 2] = array[j + iter2 + 2];
-                target[j + iter2 + 3] = array[j + iter2 + 3];
+                var iter = (j+progress[j + i]) * 4;
+                var iter2 = (j+i) * 4;
+                target[iter2 + 0] = array[iter + 0];
+                target[iter2 + 1] = array[iter + 1];
+                target[iter2 + 2] = array[iter + 2];
+                target[iter2 + 3] = array[iter + 3];
             }
         }
         draw();
