@@ -164,7 +164,7 @@ function bubblesort(array, target, width, draw, curr) {
 }
 
 
-var fun = bubblesort;
+var fun = cocktail;
 
 function processImg() {
     var c = document.getElementById('canv');
@@ -240,6 +240,16 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('mynum').addEventListener('change', function (event) {
         currIter++;
         processImg();
+    });
+    document.getElementById('redraw').addEventListener('click', function (event) {
+        currIter++;
+        processImg();
+    });
+    document.getElementById('download').addEventListener('click', function (e) {
+        var canvas = document.getElementById('canv2');
+        var dataURL = canvas.toDataURL('image/png');
+        var win = window.open();
+        win.document.write('<img src="' + dataURL + '"></img>')
     });
 }
 
