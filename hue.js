@@ -66,4 +66,4 @@ img.onload = function() {
         ctx2.putImageData(q, 0, 0);
     }, timestep);
 }
-img.src = 'baby.jpg';
+img.src = 'baby3.jpg';
